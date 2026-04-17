@@ -16,7 +16,7 @@ def synthesize(text, speaker, sample_rate=48000):
         return None
 
     audio_tensor = model.apply_tts(text=text,
-                                   speaker=speaker,
+                                   speaker='kjh_sibday' if speaker == 'Сибдей' else 'kjh_karina',
                                    sample_rate=sample_rate)
 
     audio_np = audio_tensor.squeeze().cpu().numpy()
@@ -33,8 +33,8 @@ demo = gr.Interface(
             placeholder="Чылтыстар кемни? – перініп ала сурған идінҷек."
         ),
         gr.Radio(
-            choices=["kjh_sibday", "kjh_karina"],
-            value="kjh_sibday",
+            choices=["Сибдей", "Карина"],
+            value="Сибдей",
             label="Выберите голос"
         )
     ],
