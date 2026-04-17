@@ -1,5 +1,5 @@
 ---
-title: Khakas Tts
+title: Синтез речи для хакасского языка
 emoji: 👀
 colorFrom: purple
 colorTo: yellow

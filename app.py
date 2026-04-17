@@ -31,7 +31,7 @@ def synthesize_accentor(text, speaker, sample_rate=48000):
     accentor_text = accentor(text)
 
     audio_tensor = model.apply_tts(text=accentor_text,
-                                   speaker='kjh_sibday' if speaker == 'Сибдей' else 'kjh_karina',
+                                   speaker='kjh_karina' if speaker == 'Карина' else 'kjh_sibday',
                                    sample_rate=sample_rate)
 
     audio_np = audio_tensor.squeeze().cpu().numpy()
@@ -44,7 +44,7 @@ def synthesize(text, speaker, sample_rate=48000):
         return None
 
     audio_tensor = model_nostress.apply_tts(text=text,
-                                            speaker='kjh_sibday' if speaker == 'Сибдей' else 'kjh_karina',
+                                            speaker='kjh_karina' if speaker == 'Карина' else 'kjh_sibday',
                                             sample_rate=sample_rate)
 
     audio_np = audio_tensor.squeeze().cpu().numpy()
@@ -68,7 +68,9 @@ demo = gr.Interface(
     ],
     outputs=gr.Audio(label="Результат",
                      type="numpy"),
-    title="Простая озвучка текста"
+    title="Озвучка текста на хакасском языке",
+    submit_btn="Озвучить",
+    clear_btn="Очистить",
 )
 
 demo.launch()
