@@ -3,21 +3,49 @@ import torch
 
 device = torch.device('cpu')
 
-model, _ = torch.hub.load(repo_or_dir='snakers4/silero-models',
-                          model='silero_tts',
-                          language='ru',
-                          speaker='v5_cis_base_nostress',
-                          trust_repo=True)
-model.to(device)
+model_nostress, _ = torch.hub.load(repo_or_dir='snakers4/silero-models',
+                                   model='silero_tts',
+                                   language='ru',
+                                   speaker='v5_cis_base_nostress',
+                                   trust_repo=True)
+model_nostress.to(device)
+
+
+# model, _ = torch.hub.load(repo_or_dir='snakers4/silero-models',
+#                           model='silero_tts',
+#                           language='ru',
+#                           speaker='v5_cis_base',
+#                           trust_repo=True)
+# model.to(device)
+
+# #!pip install -q silero-stress
+# from silero_stress.simple_accentor import SimpleAccentor
+# lang = 'kjh'
+# accentor = SimpleAccentor(lang=lang)
+
+
+def synthesize_accentor(text, speaker, sample_rate=48000):
+    if not text or not text.strip():
+        return None
+
+    accentor_text = accentor(text)
+
+    audio_tensor = model.apply_tts(text=accentor_text,
+                                   speaker='kjh_sibday' if speaker == 'Сибдей' else 'kjh_karina',
+                                   sample_rate=sample_rate)
+
+    audio_np = audio_tensor.squeeze().cpu().numpy()
+
+    return (sample_rate, audio_np)
 
 
 def synthesize(text, speaker, sample_rate=48000):
     if not text or not text.strip():
         return None
 
-    audio_tensor = model.apply_tts(text=text,
-                                   speaker='kjh_sibday' if speaker == 'Сибдей' else 'kjh_karina',
-                                   sample_rate=sample_rate)
+    audio_tensor = model_nostress.apply_tts(text=text,
+                                            speaker='kjh_sibday' if speaker == 'Сибдей' else 'kjh_karina',
+                                            sample_rate=sample_rate)
 
     audio_np = audio_tensor.squeeze().cpu().numpy()
 
